@@ -16,11 +16,10 @@ export default class Card extends Component {
 		fetch(`https://api.cardinfo.online?apiKey=bc08d4ecf7e651b3ec2f9a3d77c219f6&input=${card}`)
 			.then(res => res.json())
 			.then(res => { 
-				console.log(res);
 				if (res.bankLogoBigOriginalSvg) {
 					this.setState({
 						bankLogo: res.bankLogoBigOriginalSvg,
-						brandLogo: res.brandLogoLightSvg,
+						brandLogo: res.brandLogoDarkSvg,
 						checkNumber: card
 					})
 				}
@@ -35,16 +34,6 @@ export default class Card extends Component {
 		if (number.match(/\d/g) && number.length != checkNumber.length) {
 			this.getCardData(+number.match(/\d/g).join(''));
 		}
-
-		// let newNumber = number;
-
-		// while (newNumber.length < 19) {
-		// 	if (number % 5) {
-		// 		newNumber += ' XXXX';
-		// 	} else {
-		// 		newNumber += 'X';
-		// 	}
-		// }
 
 		if (cardSide == 'front' || cardSide == 'default') {
 			view = () => {
@@ -66,11 +55,9 @@ export default class Card extends Component {
 						</div>
 						<div className="card-footer">
 							<div className="card-footer_name">
-								<span className="card-title">Card Holder</span>
-								<h3 className={`${selectedElem == 'name' ? 'selected' : ''}`}>{name}</h3>
+								<h3 className={`${selectedElem == 'name' ? 'selected' : ''}`}>{name.toUpperCase()}</h3>
 							</div>
 							<div className="card-footer_expires">
-								<span className="card-title">Expires</span>
 								<h3 className={`${selectedElem == 'month' || selectedElem == 'year' ? 'selected' : ''}`}>{month}/{year}</h3>
 							</div>
 							<div className="card-logo">

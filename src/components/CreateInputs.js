@@ -21,7 +21,7 @@ function CreateInput({type, title, change, select, inputId}) {
 			<input className="input-content" 
 					type={type} 
 					id={inputId}
-					maxlength={inputId == 'name' ? 20 : ''}
+					maxLength={inputId == 'name' ? 19 : ''}
 					onChange={onChange} 
 					onFocus={() => select(inputId)}></input>
 		</div>
