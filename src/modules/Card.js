@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import CreateNumbers from '../components/CreateNumbers';
 
 export default class Card extends Component {
 
@@ -6,46 +7,49 @@ export default class Card extends Component {
 		super();
 		this.state = {
 			bankLogo: null,
-			bankColor: null,
-			brandLogo: null
+			brandLogo: null,
+			checkNumber: ''
 		}
 	}
 
 	getCardData = (card) => {
 		fetch(`https://api.cardinfo.online?apiKey=bc08d4ecf7e651b3ec2f9a3d77c219f6&input=${card}`)
 			.then(res => res.json())
-			.then(res => {
-				this.setState({
-					bankLogo: res.bankLogoBigOriginalSvg,
-					brandLogo: res.brandLogoOriginalSvg
-				})
+			.then(res => { 
+				console.log(res);
+				if (res.bankLogoBigOriginalSvg) {
+					this.setState({
+						bankLogo: res.bankLogoBigOriginalSvg,
+						brandLogo: res.brandLogoLightSvg,
+						checkNumber: card
+					})
+				}
 		});
-
 	}
 
 	render() {
 		let view = null;
 		const {number, name, month, year, cvv, cardSide, selectedElem} = this.props.state;
-		const {bankLogo, bankColor, brandLogo} = this.state;
+		const {bankLogo, brandLogo, checkNumber} = this.state;
 
-		if (number.match(/\d/g)) {
+		if (number.match(/\d/g) && number.length != checkNumber.length) {
 			this.getCardData(+number.match(/\d/g).join(''));
 		}
 
-		let newNumber = number;
+		// let newNumber = number;
 
-		while (newNumber.length < 19) {
-			if (number % 5) {
-				newNumber += ' XXXX';
-			} else {
-				newNumber += 'X';
-			}
-		}
+		// while (newNumber.length < 19) {
+		// 	if (number % 5) {
+		// 		newNumber += ' XXXX';
+		// 	} else {
+		// 		newNumber += 'X';
+		// 	}
+		// }
 
-		if (cardSide == 'front') {
+		if (cardSide == 'front' || cardSide == 'default') {
 			view = () => {
 				return (
-					<div className="card-block card-front">
+					<div className={`card-block card-front ${cardSide == 'front' ? 'anim-rotate-front' : ''}`}>
 						<div className="card-header_front">
 							<svg id="card-chip" enableBackground="new 0 0 512 512" height="40" viewBox="0 0 512 512" width="40" xmlns="http://www.w3.org/2000/svg">
 								<path d="m437 471h-362c-41.355 0-75-33.645-75-75v-280c0-41.355 33.645-75 75-75h362c41.355 0 75 33.645 75 75v280c0 41.355-33.645 75-75 75z" fill="#6495f788"/>
@@ -57,7 +61,9 @@ export default class Card extends Component {
 
 							<img src={bankLogo ? bankLogo : './default.png'} alt="card-logo"></img>
 						</div>
-						<div className={`card-body_front ${selectedElem == 'number' ? 'selected' : ''}`}>{newNumber}</div>
+						<div className={`card-body_front ${selectedElem == 'number' ? 'selected' : ''}`}>
+							<CreateNumbers number={number}/>
+						</div>
 						<div className="card-footer">
 							<div className="card-footer_name">
 								<span className="card-title">Card Holder</span>
@@ -67,6 +73,9 @@ export default class Card extends Component {
 								<span className="card-title">Expires</span>
 								<h3 className={`${selectedElem == 'month' || selectedElem == 'year' ? 'selected' : ''}`}>{month}/{year}</h3>
 							</div>
+							<div className="card-logo">
+								<img src={brandLogo ? brandLogo : './logo-card.png'}></img>
+							</div>
 						</div>
 					</div>
 				)
@@ -74,7 +83,7 @@ export default class Card extends Component {
 		} else {
 			view = () => {
 				return (
-					<div className="card-block card-back animated">
+					<div className={`card-block card-back ${cardSide == 'back' ? 'anim-rotate-back' : ''}`}>
 						<div className="card-header_back"></div>
 						<div className={`card-body_back ${selectedElem == 'cvv' ? 'selected black' : ''}`}>{cvv}</div>
 					</div>

@@ -23,7 +23,7 @@ body {
 .card-block {
 	position: relative;
 	max-width: 24rem;
-	min-height: 14rem;
+	height: 14rem;
 	background-color: rgb(70, 23, 31);
 	background-image: url('./bg.png');
 	background-size: cover;
@@ -40,6 +40,7 @@ body {
 	padding: 10px 5px;
 	display: flex;
 	justify-content: space-between;
+	height: 60px;
 }
 
 .card-header_front svg {
@@ -49,38 +50,45 @@ body {
 .card-header_front img {
 	align-self: center;
 	max-width: 110px;
-	color: #6495f788;
-	animation: show linear .3s;
 }
 
 .card-body_front {
+	min-height: 46px;
 	padding: 10px 5px;
 	text-align: center;
 	font-size: 1.3rem;
-	letter-spacing: 0.25rem;
+	letter-spacing: 0.15rem;
 }
 
 .card-footer {
-	padding: 10px 5px;
+	margin-top: 20px;
+	padding: 10px 5px 0;
 	display: flex;
 	justify-content: space-between;
 }
 
 .card-footer h3 {
+	min-height: 36px;
 	padding: 7px;
 }
 
-.card-footer_name {
-	padding: 10px 5px;
-}
-
-.card-footer_expires {
-	padding: 10px 5px;
+.card-footer_expires span {
+	padding-left: 5px;
 }
 
 .card-footer_expires h3 {
 	text-align: center;
 	min-width: 5rem;
+}
+
+.card-logo {
+	min-height: 60px;
+	max-width: 50px;
+	align-self: center;
+}
+
+.card-logo img {
+	max-width: 50px;
 }
 
 .card-back {
@@ -113,13 +121,31 @@ body {
 	border: 1px solid #000;
 }
 
-.animated {
-	animation: rotate linear .8s;
+.anim-rotate-front {
+	animation: rotate-f linear .8s;
 }
 
-@keyframes rotate {
+.anim-rotate-back {
+	animation: rotate-b linear .8s;
+}
+
+.anim-show {
+	animation: show linear .8s;
+}
+
+@keyframes rotate-f {
 	from {
-		transform: rotateY(90deg);
+		transform: rotateY(-90deg);
+	}
+
+	to {
+		transform: rotateY(0deg);
+	}
+}
+
+@keyframes rotate-b {
+	from {
+		transform: rotateY(-90deg);
 	}
 
 	to {
@@ -129,11 +155,11 @@ body {
 
 @keyframes show {
 	from {
-		transform: translateY(50px);
-		opacity: 0;
+		transform: translateY(10px);
+		/* opacity: 0; */
 	} 
 	to {
-		transform: translateY(0px);
-		opacity: 1;
+		transform: translateY(0);
+		/* opacity: 1; */
 	}
 }

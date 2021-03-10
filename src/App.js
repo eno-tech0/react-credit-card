@@ -12,7 +12,7 @@ export default class App extends Component {
 			month: 'MM',
 			year: 'YY',
 			cvv: '',
-			cardSide: 'front',
+			cardSide: 'default',
 			selectedElem: null
 		}
 	}
